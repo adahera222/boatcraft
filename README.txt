@@ -4,6 +4,23 @@
 BOATCRAFT README:
 
 
+UPDATES: 
+
+Memory leak seems to be resolved. 
+Also PhotonView was responsible for the fresh install not working with multi-instantiation. 
+Works now on either. Using legacy memory leak version though because the ocean settings are better. 
+For some reason when you import the water across scenes it loses the scripted color settings.
+
+
+//note ignore all the errors in the console when you compile it should still work. There's like 80 errors or something. 
+A bunch of them can be fixed just by updating the .active method (which changed in a Unity update) the others are 
+small mistakes I haven't bothered fixing cause it doesn't crash.
+
+I'm using a version that had a memory leak a bit ago but that stopped. I might switch to a fresh install again later but 
+I was having issues importing the ocean settings which looked really nice so I just am leaving it for now.
+DON'T DARE TOUCH ANY OF THE OLD ART ASSETS IT CAN LEAD TO HORRIFYING ERRORS. YOU HAVE BEEN WARNED.
+
+
 Developed on Unity 0.4.0.7f Pro version I'm not sure what the conflicts are so just use that version.
 
 IMPORTANT REFERENCES:
@@ -75,7 +92,7 @@ If you stuck character.position = pos inside an Update { } function and attached
 In order to have networking support, there is a function called OnPhotonSerializeNetworkView, this 'serializes' two scripts just like a JSON serializer. 
 There's a Network runtime class that implements the same functionality, but the examples are less easy to use than PUN. 
 So once you get above 100 users it's pretty easy to build Unity's C++ Master server and use the Network.Instantiate runtime classes that PUN wraps. 
-
+(There is also stream writing, RPCs in addition to serializer.)
 Right now the way the game is working to serialize stuff is pretty straightforward and simple. In MovementMotor inside Scripts/Movement there is a serialization function that
 updates the characters position and linearly interpolates to make sure they don't lag or stutter. The ONLY important variable there is the interpolation distance
 which is set to 45 right now. If you scale the boat sizes that must be adjusted or you will get lag and stutter effects! The only other serializers are 
@@ -85,13 +102,19 @@ Quick word on prefabs. To make a prefab, drag a gameobject from the scene view t
 Resources/currentworkingplayer.prefab is the current 'character' prefab. It has the collider, health, network view, character controller, movement motor, 
 and weapon scripts in child objects. 
  
-Right now I left the player inside the scene view to minimize errors, the idiot who wrote Angrybots demo made like 10,000 child game objects of the 'player' model, so
-to access the weapon scripts search for 'weapon' in the scene view of the game with a playerprefab inside the scene. (Drag from resources to scene to 
-instantiate a test model to mess with it's child game objects.) You should see WeaponSlot game object with scripts AutoFire and TriggerOnMouseOrJoystick.
+Right now I left the player inside the scene view to minimize errors, the idiot who 
+wrote Angrybots demo made like 10,000 child game objects of the 'player' model, so
+to access the weapon scripts search for 'weapon' in the scene view of the game with a playerprefab inside the scene.
+ (Drag from resources to scene to instantiate a test model to mess with it's child game objects.)
+ You should see WeaponSlot game object with scripts AutoFire and TriggerOnMouseOrJoystick.
+ ***NOTE FIXED now player model is deleted and WeaponSlot is moved up to battleyam. But be aware of this
+ if you're using legacy Angrybots code anywhere!!
 
-Those scripts show you how network instantiation works. TriggerOnMouse, when viewed from the Unity Editor on a WeaponSlot has 2 'signal senders'.
-Their 'recievers' are set to WeaponSlot as well, which means on mouse signals get redirected back to the WeaponSlot game object. 
-The WeaponSlot game object then has Autofire.js which accepts those game signals by having two function inside of it. OnStartFire and OnStopFire. 
+Those scripts show you how network instantiation works. TriggerOnMouse, when viewed from the Unity Editor 
+on a WeaponSlot has 2 'signal senders'.
+Their 'recievers' are set to WeaponSlot as well, which means on mouse signals get redirected back to the 
+WeaponSlot game object. The WeaponSlot game object then has Autofire.js which accepts those game signals 
+by having two function inside of it. OnStartFire and OnStopFire. 
 Those functions trigger a boolean that starts a recurring firing sequence where bulletPrefabs are instantiatedwith velocity towards where you're firing. 
 It's pretty easy to modify it to shoot in the direction of PlayerMoveController.cursorWorldPosition (fire where mouse is) instead of firing forward only
 but its not set that way yet.
@@ -102,7 +125,22 @@ Unity docs for examples.
 
 Autofire.js / TrigOnMouse were replicated in autofiredowncastbuildings.js and trigonbut.js. 
 It seems to instantiate over the network like bullets, but for some reason if you instantiate 
-before a client connects, it doesn't appear. Needs some kind of fix. 
+before a client connects, it doesn't appear. Needs some kind of fix. Pretty easy though, just add buildings 
+to a list that gets serialized.
+
+##NOTE NOTE PhotonNetwork.Instantiate provides the same functionality, but Autofire.js 
+was written use serialized bools + Spawner.Spawn which is just client side Instantiate.
+I'm not sure why the Angrybots writer chose that serialization format but I continued to use it 
+because changing things == bad. At some point though should test the PhotonNetwork.Instantiate function
+
+ALSO BIG IMPORTANT NOTE: PHOTON SERIALIZERS REQUIRE A UNIQUE PHOTON VIEW COMPONENT 
+ATTACHED TO THE GAMEOBJECT TO FUNCTION. Set it's view to the script you want it to watch. See buildingslot 
+on playerprefab for example. Notice how there is a photonview on THREE scripts, AutoFire, main gameobject MovementMotor
+and buildingslot's script.
+
+Health.js shows a Remote Procedure Call through photon that sends a "Die" signal. This is good example.
+There's a PDF in the Photon Unity Networking folder that describes those classes.
+You'll probably want to use stream.serialize( ) method also.
 
 This is allows you to click the GUI button (created in FreeMovementMotor.js just because I needed the GUI to print out movement debugs.) 
 
@@ -114,7 +152,8 @@ Right now there's only one movement type possible, a continuous acceleration a l
 The camera system right now is written using a bool switch for FlyCam versus Not-Flycam.
 Once in Not-flycam (toggled by key T): there is RTSCamera and FollowCamera modes.
 
-RTSCamera is up down left right movement like starcraft + a smoothdamp function for zoom distance. LMB Pivots about camera's current worldposition. RMB look-rotates in place. 
+RTSCamera is up down left right movement like starcraft + a smoothdamp function for zoom distance. 
+LMB Pivots about camera's current worldposition. RMB look-rotates in place. 
 !!(TO BE ADDED) Need to be able to adjust the pivot point a la 3ds max, and assign it via camera look function.
 
 Followcam is triggered by F. Strict followcam (locks rotation axes and follows char position AND rotation.) triggered by G once in follow.
@@ -165,9 +204,9 @@ Open up the scene in Unity, if you didn't look at the Photon Multiplayer Network
 Go to File, Build Settings. Now look in the bottom Assets panel (there is a console/project button switch on the bottom panel, 
 so if you see the console, switch to assets).
 
-Click on Assets/Scenes folder, inside there are numbered scenes. Double click the top scene, then go to build settings and hit 'add current'.
+Click on Assets/Scenes folder, inside there are numbered scenes. Double click the top scene, 
+then go to build settings and hit 'add current'.
 Add scenes in the correct order!!!, 0, 1, 2, 3. If you add them in the wrong order untoggle them and start over. 
 
-Right now for scene 2 I am using 02_OceanLoder.unity. The other 02_Angrybots is the legacy original scene file from the barebones, 
-there's various effects you might want to borrow inside like correct AI pathing laid out.
+Right now for scene 2 I am using 02_Angrybots. in /Scenes. There's a backup of original Angrybots in Assets.
 

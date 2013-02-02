@@ -32,6 +32,14 @@ class FreeMovementMotor extends MovementMotor {
 	public var turningSmoothing : float = 0.3;
 		var buildflag : boolean = false;
 		
+			var mastergolist : GameObject;
+ var other : amaster;
+		function Start () {
+
+		
+			mastergolist = GameObject.Find("mastergolist");
+			 var other : amaster = mastergolist.GetComponent(amaster);
+}
 		
 	function OnGUI () {
 		var alphaBlend;
@@ -76,9 +84,10 @@ class FreeMovementMotor extends MovementMotor {
 				}
 			}
 		//	var go : GameObject = Spawner.Spawn (bulletPrefab, Vector3(0,0,0), Quaternion.identity) as GameObject;
-				
+																GUILayout.Label ('mastr' + other.mastr.ToString() );
 						GUILayout.Label (tte.ToString() );
 						GUILayout.Label (autofiredowncastbuildings.faf.ToString() );
+												GUILayout.Label (autofiredowncastbuildings.arty.ToString() );
 //RADAR HERE!! needs to be modified substantially, background image grid, scaling, etc.
 				
 			var playerGOs = GameObject.FindGameObjectsWithTag("Player"); 
@@ -133,6 +142,9 @@ class FreeMovementMotor extends MovementMotor {
 	//	MovementMotor.dst = GUILayout.HorizontalSlider (MovementMotor.dst, 0	, 222);
 		//	GUILayout.Label ('MovementMotor.ac : ' + MovementMotor.ac.ToString());
 	//	MovementMotor.ac = GUILayout.HorizontalSlider (MovementMotor.ac, 0	, 33);
+	
+			PlayerMoveController.mcfov = GUILayout.HorizontalSlider (	PlayerMoveController.mcfov, 30	, 140);
+
 		GUILayout.EndArea ();	
 	//	GUILayout.EndArea ();	
 		

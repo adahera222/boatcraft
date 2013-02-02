@@ -72,9 +72,24 @@ function Awake () {
 	playerMovementPlane = new Plane (character.up, character.position + character.up * cursorPlaneHeight);
 }
 var marc : GameObject;
+
+	var mastergolist : GameObject;
+
 function Start () {
-	
+	//START FUNCTION THIS GETS RUN ONCE if you need to set something up at the start this is probably better than awake
+
 	if(GetComponent(typeof(PhotonView)).isMine){
+		/*
+	
+	
+	if (autofiredowncastbuildings.arty.length != 0){
+	for(var i : int = 0; i < autofiredowncastbuildings.arty.length; i++) {
+		counter += 5;
+		Spawner.Spawn(autofiredowncastbuildings.arty[i],Vector3(0,0,counter),Quaternion.identity) ;
+		}
+		}
+	
+	*/
 	var s = "{ \"foo\": \"bar\", \"baz\" : [ 17, 18, 19, { \"fish\" : \"soup\" } ]}";
 
 	
@@ -101,7 +116,7 @@ print( json_array.stringify() ); // [ 1, "two", {"foo":"bar"} ];
 var screenShotURL= "http://localhost:8000";
 	
  var form = new WWWForm();
-    form.AddField("frameCount", "wtf");
+    form.AddField("frameCount", "send this out");
 	
 	var w = WWW(screenShotURL, form);
 	 yield w;
@@ -111,6 +126,7 @@ var screenShotURL= "http://localhost:8000";
         print("Finished Uploading Screenshot");
 	
 		marc = Instantiate(maar, character.position, Quaternion.identity);
+		print("this should only print once");
 	#if UNITY_IPHONE || UNITY_ANDROID
 		if (joystickPrefab) {
 			// Create left joystick re-parameterize poekr hands J9  as vectors 8d
@@ -144,6 +160,11 @@ var screenShotURL= "http://localhost:8000";
 	
 	motor.facingDirection = character.forward;
 	motor.facingDirection.y = 0 ;
+	
+// This will return the game object named Hand in the scene.
+	mastergolist = GameObject.Find("mastergolist");
+	var other : amaster = mastergolist.GetComponent(amaster);
+
 }
 //iOS / mobile crap
 function OnDisable (){ 
@@ -197,13 +218,60 @@ static var rmbAd :  Array = [0.0f,0.0f];
  var goct : GameObject  = new GameObject("Cam Target");
  var ff : boolean = true;
 		var bulletPrefab : GameObject;
-
+ var flipped : boolean = true;
+var counter : float = 0;
 var fireRate = 0.5;
 private var nextFire = 0.0;
 var LR : LineRenderer;
+static var mcfov = 80;
+static var cpe : Vector3;
 function Update () {
+cpe = character.position;
+    // var otherScript: OtherScript = GetComponent(Health); 
 
-	
+	var view : PhotonView = GetComponent(typeof(PhotonView));
+
+	if(PhotonNetwork.isMasterClient){
+	    // Die if no health left
+	    if (cpe.y < -50) {		
+	        if(view.isSceneView){
+	            view.RPC("Die", PhotonTargets.AllBuffered);
+	        }else{
+	        view.RPC("Die", PhotonTargets.All);
+	     }
+		}
+		}
+
+mainCamera.fieldOfView = mcfov;
+
+//gui build object code for some reason needs to be outside autofiredowncastbuildings??
+
+//FINALLY THIS build code works. SendNext with type array is NOT working for some reason. 
+//possible options for sending data / destroying instantiated objects after joining a running server
+// when you don't have a list of them
+//amaster.js has RPC code demonstrations for synchronizing data. haven't tested yet 
+//also can use Json strings to pass strings with SendNext or RPC
+//OR the easiest way, photonnetwork.instantiate and then to destroy objects GameObject.Find or findwithtag
+//thats probably the easiest way ; the array thing is irritating but json works.
+
+if(autofiredowncastbuildings.fexport) {
+	if (flipped){
+		counter +=5;
+	//	var buildgameobject : GameObject = Spawner.Spawn (bulletPrefab, Vector3(0,0,counter), Quaternion.identity)  as GameObject;
+//Remember PhotonNetwork.Instantiate requires a prefab in /Resources, otherwise you need to assign the photonview manually
+
+     var buildgameobject : GameObject =  PhotonNetwork.Instantiate(bulletPrefab.name, Vector3(0,0,counter), Quaternion.identity, 0);
+
+
+		autofiredowncastbuildings.arty.push(buildgameobject);
+		
+		flipped = false;
+		}
+}
+else{
+flipped = true;
+}
+
 //iOS / mobile crap
 
 
@@ -328,8 +396,9 @@ function Update () {
 						LR.enabled = false;
 						}
 						var pe = Mathf.PI;
+						var radiusLR = 3;
 						   for(var i : int = 0; i < 33; i++) {
-				var pos : Vector3 = character.position + Vector3(10*Mathf.Cos(i*pe/15), 9, 10*Mathf.Sin(i*pe/15) );
+				var pos : Vector3 = character.position + Vector3(radiusLR*Mathf.Cos(i*pe/15), 2, radiusLR*Mathf.Sin(i*pe/15) );
         LR.SetPosition(i, pos);
     }
 			// Acquire the relative screen position			

@@ -87,6 +87,7 @@
      <None Include="Assets\Plugins\PhotonNetwork\library\Photon3Unity3D.xml" />
      <None Include="Assets\Shaders\Fx\Multiply.shader" />
      <None Include="Assets\Standard Assets\Water (Pro Only)\Water4\Sources\Shaders\FX-SimpleWater4.shader" />
+     <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
      <None Include="Assets\Shaders\Fx\Blend.shader" />
      <None Include="Assets\Shaders\Fx\HeightFogBeforeTransparent.shader" />
      <None Include="Assets\Shaders\BackgroundAndCharacters\CharacterSelfIlluminationReflective.shader" />

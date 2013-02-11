@@ -11,14 +11,13 @@ the bool code and PMC can see that so whatever it works. ??Mystery not explained
 
 UPDATES: 
 
-Memory leak seems to be resolved. Also PhotonView was responsible for the fresh install not working with multi-instantiation. Works now on either. Using legacy memory leak version though because the ocean settings are better. For some reason when you import the water across scenes it loses the scripted color settings.
+Memory leak seems to be resolved. Using legacy memory leak version though because the ocean settings are better. For some reason when you import the water across scenes it loses the scripted color settings.
 
 
 //note ignore all the errors in the console when you compile it should still work. There's like 80 errors or something. 
 A bunch of them can be fixed just by updating the .active method (which changed in a Unity update) the others are 
 small mistakes I haven't bothered fixing cause it doesn't crash.
 
-I'm using a version that had a memory leak a bit ago but that stopped. I might switch to a fresh install again later but I was having issues importing the ocean settings which looked really nice so I just am leaving it for now.
 DON'T DARE TOUCH ANY OF THE OLD ART ASSETS IT CAN LEAD TO HORRIFYING ERRORS. YOU HAVE BEEN WARNED.
 
 Developed on Unity 0.4.0.7f Pro version I'm not sure what the conflicts are so just use that version.

@@ -150,6 +150,7 @@ playerMovementPlane = new Plane (Vector3.up, Vector3(0,0,0));
 	startime = Time.time;
 	view = GetComponent(typeof(PhotonView));
 }
+//OH HH can i pass in a built in array/ = [legnth]
 var myHashtable = Dictionary.<String, String> ();
 //var lister = List.<String> ();
 var myDictionary : Dictionary.<String,String> = new Dictionary.<String,String> ();
@@ -242,16 +243,19 @@ function OnGUI() {
 
 }
 
+//making a grid of game objects is stupid, you know what's not stupid? making a hex position mask
+//actually is a raycast equivalent//?? good questions.
+//but it already works this way so fuck it.
 
 
 
 var stateholder : boolean = true;
 function Update () {
-if (started && ffs) {
-								ffs = false;
+//if (started && ffs) {
+					//			ffs = false;
 									//		startfunct(baknames) ;//make class later
 
-	}
+//	}
 
 		var cursorScreenPosition : Vector3 = Input.mousePosition;
 						
@@ -279,7 +283,7 @@ function OnStartFire () {
 function OnStopFire () {
 	notready = false;
 	
-}
+} 
 
 function OnPhotonSerializeView ( stream : PhotonStream,  info : PhotonMessageInfo)    
    {

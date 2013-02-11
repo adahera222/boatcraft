@@ -1,5 +1,5 @@
 #pragma strict
-
+//this was the old tiling function it's not used anymore, but it still has a raycast selector at the bottom
 //tiles, abbreviated because it's clear
 var b : GameObject;
 var w : GameObject;

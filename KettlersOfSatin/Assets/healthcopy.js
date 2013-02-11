@@ -51,7 +51,12 @@ var phi : float = 1.61803398875;
 	function getvertpos(tileobj : GameObject,scale : float,scale2 : float) {
 	
 //    var scale2 =Mathf.Pow(phi,.5);
-
+	//extents = r
+	//so, instantiate all the game objects and vertices and roads, add a script to each that is oncolliderstay
+	//populate that script with an array that contains the entries of oncollid.
+ //  print (s);
+   // print (h);
+  //print (topvertex);
  // var scale =Mathf.Pow(phi,.9);
 	
 		 var coll = tileobj.GetComponent(typeof(MeshCollider));
@@ -93,61 +98,9 @@ roadrots[0] = Quaternion.Euler(0,-60,0);
 	   roadrots[5] = Quaternion.Euler(0,60,0);
 	return [vertices, roads,roadrots];
 	}
-	
-	
-function create_tiles() {
-
-
-	   
- var gridsize : int = 19;
-	   //  var playerGOs = GameObject.FindGameObjectsWithTag("Player"); 
+		   //  var playerGOs = GameObject.FindGameObjectsWithTag("Player"); 
 	   //right click select deselect, then drop settlement button. after build.
-
- var testhex : GameObject = new GameObject.FindWithTag("bound")  ;
- 
- 
-  var sca = Mathf.Pow(phi,5.8);
-  
-  
- testhex.transform.localScale = Vector3(sca,3,sca);
- 
- 
- var coll = testhex.GetComponent(typeof(MeshCollider));
-  var rnd = testhex.GetComponent(typeof(MeshRenderer));
-//rhombic dodechahedral 
- //print (coll.bounds);
-  //print (coll.bounds);
-  // ascending = true false
-  //left edge, right edge
-  //top, bottom
- 
-  //http://www.codeproject.com/Articles/14948/Hexagonal-grid-for-games-and-other-projects-Part-1
-  //pointy orientation.
-  var topvertex2 : Vector3 = coll.bounds.center + Vector3(0,0,coll.bounds.extents.z); //same thing
-    var topvertex : Vector3 = rnd.bounds.center + Vector3(0,0,rnd.bounds.extents.z);
-	var c : Vector3= coll.bounds.center;
 	
-	 var r = coll.bounds.extents.x;
-  var s = r / (Mathf.Cos(30*Mathf.Deg2Rad) );
-  var h = s*(Mathf.Sin(30*Mathf.Deg2Rad) );
-  
-	var u = coll.bounds.extents.z;
-	var uv : Vector3 = Vector3(0,0,u);
-	var rv : Vector3 = Vector3(r,0,0);
-	
-	var hu : Vector3 =  Vector3(0,0,h) ;
-	//extents = r
-	//so, instantiate all the game objects and vertices and roads, add a script to each that is oncolliderstay
-	//populate that script with an array that contains the entries of oncollid.
- //  print (s);
-   // print (h);
-  //print (topvertex);
-  var x = topvertex.x;
-  var y = topvertex.z;
-  
-  
-  
-
   var colors = new  Color[6];
   colors[0] = Color.red;
     colors[1] = Color.green;
@@ -155,48 +108,14 @@ function create_tiles() {
   colors[3] = Color.yellow;
   colors[4] = Color.gray;
   colors[5] = Color.magenta;
-
-  
-  
-    var scale2 =Mathf.Pow(phi,.5);
-
-  var scale =Mathf.Pow(phi,.9);
- //  var statarray =  getvertpos(testhex,scale,scale2);
-//	var vertices :   Vector3[] = statarray[0];
-	//var roads :   Vector3[] = statarray[1];
-//	var roadrots : Quaternion[] = statarray[2];
-
 	
- 
 	
-  var cnt = 0;
-       var scaa = Mathf.Pow(phi,4.5);
-	   /*
-  for (var vert : Vector3 in vertices) {
-   var tempgo : GameObject = PhotonNetwork.Instantiate(spheretester.name,vert + Vector3(0,1,0),Quaternion.identity,0);
+	var tilenumray = Array();
 
-  //add an animation of a picture on fire for the robber hah and screams when you mouseover 
-   tempgo.transform.localScale = Vector3(scaa,scaa,scaa);
-   tempgo.renderer.material.color = colors[cnt];
-   cnt++;
-  }
-
-
-
-// perform a remote procedure call function that updates the color of road / settlement to whatever., for cities add an extra gameobject,
-//on top of it that is a black sphere probly.
-//wide angle lens bend sphere
-
-for (var hii = 0; hii < 6; hii++) {
-
-
-   var roadz : GameObject = PhotonNetwork.Instantiate(roadgo.name,roads[hii] + Vector3(0,1,0),roadrots[hii],0);
-	     roadz.transform.localScale = Vector3(scaa/2,scaa/3,scaa*2);
-   roadz.renderer.material.color = colors[hii];
-
-}
-*/
 var randtiles = Array();
+	
+function create_tiles() {
+
 randtiles.push(5);
 //randtiles.push(5);
 //randtiles.push(5);
@@ -213,35 +132,12 @@ randtiles.push(0);
 randtiles.push(1);
 randtiles.push(2);
 }
-print (randtiles.length);
+//print (randtiles.length);
 
 // var tempgog : GameObject = PhotonNetwork.Instantiate(whex.name  ,Vector3(-70,10,-70) + (2*uv - hu)*tiledex + tiledex*(rv/scale2),Quaternion.Euler(0,330,0) ,0);
 //good diag spacing but too closex . 
 
 RandomizeArray(randtiles);
-//if i in restricted roads/ etc. 6 4 2 3 pattern then skip bool
-   
-	  //roads[1] = c + (rv - hu)/scale          ;      //Vector3(x + r, 0,y - h);
-var tilemax = 3;
-    var scalez =Mathf.Pow(phi,.9);
-
-  var tilescale = Mathf.Pow(phi,5.8);
-  
-  
- // var tilemax = 3;
-//populate the vertex roads line by line, so along ltiling 3 pattern hit the bottom three or whatnot. each has 2 rails.
-/*
-   for (var tileset = 0; tileset < 5; tileset++) {
-	var zoffset =  (2*uv - hu)*tileset ;
-	if (tilemax < 5){
-	tilemax += 1;//3, 4, 5, 4, 3
-	}
-	else{
-	tilemax -= 1;
-	}
-	
-	*/
-	var tilenumray = Array();
 	tilenumray.push(2);
 	tilenumray.push(12);
 	
@@ -253,18 +149,109 @@ if (aqq != 7) {
 	tilenumray.push(aqq);
 	}
 	}
-
 //	[2, 3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12];
 	RandomizeArray(tilenumray);
+
 	
-	var onceflip : boolean = false;
+//find the tile scale size using phi, phi helps make the city / road to tile size look pleasant. you need a preformed tile for the dimensions to be known
+ 
+  //print(totalcount);
+  
+  var tiletextures = new int[randtiles.length];
+  var tilefreq = new int[tilenumray.length];
+  
+for (var ff = 0; ff < randtiles.length; ff++) {
+tiletextures[ff] = randtiles[ff];
+}
+for (var ffff = 0; ffff < tilenumray.length; ffff++) {
+tilefreq[ffff] = tilenumray[ffff];
+
+}
+
+//for (var tex : int in tilefreq) {
+//print(tex.ToString() ) ;
+//}
+
+//print(tilefreq.ToString() ) ;
+print ('testONCE');
+			view.RPC("spawninfo", PhotonTargets.Others,tiletextures,tilefreq);
+
+   spawnboard() ;
+
+
+}
+
+var apparentlyyouneedafuckingbooleanswitchhereoritfirestwiceWTF : boolean = true;
+//why is this rpc being called without a signal?/ oh it was aghost game?
+
+@RPC
+function spawninfo( tiletextures : int[], tilefreq : int[] ) {
+
+print('test');
+
+//if (apparentlyyouneedafuckingbooleanswitchhereoritfirestwiceWTF) {
+
+//apparentlyyouneedafuckingbooleanswitchhereoritfirestwiceWTF = false;
+for (var tex :int in tiletextures) {
+randtiles.push(tex);
+}
+
+print ( randtiles.ToString() );
+for (var freq :int  in tilefreq) {
+tilenumray.push(freq);
+}
+
+print ( tilenumray.ToString() );
+   spawnboard() ;
+
+  // }
+
+
+} 
+
+
+function spawnboard() {
+
+var testhex : GameObject = new GameObject.FindWithTag("bound")  ;
+ 
+ 
+ var gridsize : int = 19;
+  var sca = Mathf.Pow(phi,5.8);
+  
+  //only rv is being used but the others should help with spacing later when you resize the tile grids.
+ testhex.transform.localScale = Vector3(sca,3,sca);
+ var coll = testhex.GetComponent(typeof(MeshCollider));
+	var c : Vector3= coll.bounds.center;
+	 var r = coll.bounds.extents.x; 
+	 	var rv : Vector3 = Vector3(r,0,0);
+		  var rnd = testhex.GetComponent(typeof(MeshRenderer));
+  var topvertex2 : Vector3 = coll.bounds.center + Vector3(0,0,coll.bounds.extents.z); //same thing
+    var topvertex : Vector3 = rnd.bounds.center + Vector3(0,0,rnd.bounds.extents.z);
+  var s = r / (Mathf.Cos(30*Mathf.Deg2Rad) );
+  var h = s*(Mathf.Sin(30*Mathf.Deg2Rad) );
+	var u = coll.bounds.extents.z;
+	var uv : Vector3 = Vector3(0,0,u);
+	var hu : Vector3 =  Vector3(0,0,h) ;
+  var x = topvertex.x;
+  var y = topvertex.z;
+    var scale2 =Mathf.Pow(phi,.5);
+  var scale =Mathf.Pow(phi,.9);
+  var cnt = 0;
+       var scaa = Mathf.Pow(phi,4.5);
+	   
+	//var vertsetalpha = [0,1,2,3,4,5];
+	var tilemax = 3;
+    var scalez =Mathf.Pow(phi,.9);
+  var tilescale = Mathf.Pow(phi,5.8);
+		var onceflip : boolean = false;
 	var totalcount : int = 0;
 	var zoffset = Vector3(0,0,0);
 	
-	var vertsetalpha = [0,1,2,3,4,5];
 		var roadray = Array();
 
 	var vertray = Array();
+	
+	
    for (var tiledex2 = 0; tiledex2 < 5; tiledex2++) {
    
 
@@ -272,10 +259,12 @@ if (aqq != 7) {
 totalcount+=1;
 //var zoffset =  (2*uv - hu)*tileset ;
    var xoffset =  tiledex*(rv*scale);
- var tempgog : GameObject = PhotonNetwork.Instantiate(whex.name  ,Vector3(-70,10,-70) +zoffset+xoffset,Quaternion.Euler(0,330,0) ,0);
+    var tempgog : GameObject = Instantiate(whex  ,Vector3(-70,10,-70) +zoffset+xoffset,Quaternion.Euler(0,330,0) );
 
+ //var tempgog : GameObject = PhotonNetwork.Instantiate(whex.name  ,Vector3(-70,10,-70) +zoffset+xoffset,Quaternion.Euler(0,330,0) ,0);
 
-
+//so either we pass in the gameobjects tag location.... or just clientside instantiate and rpc//?
+//does splitstring work??
 
  var statarrayaa =  getvertpos(tempgog,scale,scale2);
 	var verticesaa :   Vector3[] = statarrayaa[0];
@@ -292,7 +281,10 @@ flag = true;
 								}
 							}
 							if (flag){
- var tempvert : GameObject = PhotonNetwork.Instantiate(spheretester.name,verticesaa[vertd] + Vector3(0,1,0),Quaternion.identity,0);
+ //var tempvert : GameObject = PhotonNetwork.Instantiate(spheretester.name,verticesaa[vertd] + Vector3(0,1,0),Quaternion.identity,0);
+    var tempvert : GameObject = Instantiate(spheretester,verticesaa[vertd] + Vector3(0,1,0),Quaternion.identity);
+
+   
    vertray.push(tempvert.transform.position);
    tempvert.transform.localScale = Vector3(scaa,scaa,scaa);
    tempvert.renderer.material.color = Color.gray;// colors[vertd];
@@ -308,30 +300,40 @@ flag = true;
 							for (var hip = 0; hip < roadray.length; hip++) {
 								 tempvector2 = roadray[hip];
 								if ( ( tempvector2- roadsaa[hid]).magnitude < 5) {
-									flag = false;
+									flag = false; //this is a horrible way of solving this problem but fuck it.
 								}
 							}
 							if (flag){
-							
-   var roadd : GameObject = PhotonNetwork.Instantiate(roadgo.name,roadsaa[hid] + Vector3(0,1,0),roadrotsaa[hid],0);
-	      //  roadray.push(roadd.transform.position);
+							   var roadd : GameObject = Instantiate(roadgo,roadsaa[hid] + Vector3(0,1,0),roadrotsaa[hid]);
 
+  // var roadd : GameObject = PhotonNetwork.Instantiate(roadgo.name,roadsaa[hid] + Vector3(0,1,0),roadrotsaa[hid],0);
+	      //  roadray.push(roadd.transform.position);
+//add an rpc for each of these?? we need rpcs anyways in order to modify the color.. so this will jsut be the first of those.
 		 
 		 roadd.transform.localScale = Vector3(scaa/2,scaa/3,scaa*2);
    roadd.renderer.material.color = Color.black;// colors[hid];
   }
 }
- 
- 
+	if (tilenumray.length != 0 ) {
 
- 
-						
-		
  var tileint : int = randtiles.pop();
- 
- tempgog.renderer.material.mainTexture = textures[tileint];
+}
 
-  tempgog.transform.localScale = Vector3(tilescale,3,tilescale); // oh snap probably should be 
+	if (!(tileint==5)) {
+	if (tilenumray.length != 0 ) {
+	var num = tilenumray.pop();
+	}
+	tempgog.name = num.ToString();
+
+	}
+	else{
+	tempgog.name = '0';
+	}
+
+
+ tempgog.renderer.material.mainTexture = textures[tileint]; //tileint
+
+ tempgog.transform.localScale = Vector3(tilescale,3,tilescale); // oh snap probably should be 
   
   	 var collera = testhex.GetComponent(typeof(MeshCollider));
 
@@ -339,16 +341,9 @@ flag = true;
   //that i mean put this step before and fix offsets proportional to the scales.
 var ccc : Vector3= collera.bounds.center;
 
-	if (!(tileint==5)) {
-	var num = tilenumray.pop();
-	tempgog.name = num.ToString();
-	//   var numbr : GameObject = PhotonNetwork.Instantiate(roadgo.name,Vector3(-70,10,-70) +zoffset+xoffset + Vector3(0,1,0),Quaternion.identity,0);
 
-	}
-	else{
-	tempgog.name = '0';
-	}
-  
+  	//   var numbr : GameObject = PhotonNetwork.Instantiate(roadgo.name,Vector3(-70,10,-70) +zoffset+xoffset + Vector3(0,1,0),Quaternion.identity,0);
+//adjust the scale of the tiles AFTER road/vert to eliminate clipping edges
   //print('ok');
   
   }
@@ -371,52 +366,42 @@ var ccc : Vector3= collera.bounds.center;
   
   
   }
-  print(totalcount);
   
-  
- // for (var vertdex = 0; vertdex < vertmax, vertdex++) {
-  
-  
-  //}
-  
- // Instantiate(spheretester,metatemp,Quaternion.identity));
-  //first tile flag, spawn 6 vertices
-  //next tiles in that row, spawn 4, 4
-  //next row top = 4, then 2, 2 , 3
-  // 6 , 4 , 4 bottom four
-  // 4, 2 , 2 , 3 , 
-  // 4, 2, 2,....,3
-  // 3, 2, .....2
-  
-  /*
-
-	*/
-//  print ('debug');
-/*
- points[0] = new PointF(x, y);
-                points[1] = new PointF(x + r, y + h);
-                points[2] = new PointF(x + r, y + side + h);
-                points[3] = new PointF(x, y + side + h + h);
-                points[4] = new PointF(x - r, y + side + h);
-                points[5] = new PointF(x - r, y + h);
-*/
-// 3, 4, 5, 4, 3 ; ii+1, +1,, -1, -1 if i>3 i*=-1 
-
-
-
-}
+  }
 //renderer.material.mainTexture = textures[0] thru 4;
 private var flipswitchonce : boolean = true;
 
+/*
+@RPC
+function settile(tempgog : GameObject, tileint : int) {
+  var tilescale = Mathf.Pow(phi,5.8);
+
+ tempgog.renderer.material.mainTexture = textures[tileint];
+
+  tempgog.transform.localScale = Vector3(tilescale,3,tilescale);
+}
+*/
+// var tgo = tempgog.GetInstanceID;
+ //var tgo = new GameObject[1];
+// tgo[0] = tempgog;
+//so make a hashtable inside the RPC call that looks up all gameobjects and creates an id table.
+//ORRRRR instantiate the objects locally, give them all named location tags, and then do RPCs by location.
+// i like the id table thing better it in some ways.
+ 	//		view.RPC("settile", PhotonTargets.All,tgo,tileint);
 var numgo : GameObject;
 function Update () {
 
-	if(PhotonNetwork.isMasterClient && cursorcapture.started && flipswitchonce){
+if (view.isMine) {
+	if(PhotonNetwork.isMasterClient){
+	
+	if(cursorcapture.started ){
+	
+		if(flipswitchonce){
 	//serialize flipswitchonce in another script to make sure you don't double instantiantiate on someone leaving who is host.
 	create_tiles();
 	
 			flipswitchonce = false;
-		//	print ('ONCE PRINT');
+		print ('ONCE PRINT');
 			
 						
 	     var playerGOs = GameObject.FindGameObjectsWithTag("Player"); 
@@ -432,6 +417,9 @@ function Update () {
 			RandomizeStaticArray(myArray);
 			
 			view.RPC("SetHP", PhotonTargets.All,myArray);
+			}
+}
+}
 
 }
 
@@ -588,4 +576,86 @@ function SetHP(newVal : String[] ){
 			//myList.Add('fuuuu');
 		//	myList.Add('wht');
 			//
+				   
+	   
+ //  var statarray =  getvertpos(testhex,scale,scale2);
+//	var vertices :   Vector3[] = statarray[0];
+	//var roads :   Vector3[] = statarray[1];
+//	var roadrots : Quaternion[] = statarray[2];
+
+	
+	   /*
+  for (var vert : Vector3 in vertices) {
+   var tempgo : GameObject = PhotonNetwork.Instantiate(spheretester.name,vert + Vector3(0,1,0),Quaternion.identity,0);
+
+  //add an animation of a picture on fire for the robber hah and screams when you mouseover 
+   tempgo.transform.localScale = Vector3(scaa,scaa,scaa);
+   tempgo.renderer.material.color = colors[cnt];
+   cnt++;
+  }
+
+
+
+// perform a remote procedure call function that updates the color of road / settlement to whatever., for cities add an extra gameobject,
+//on top of it that is a black sphere probly.
+//wide angle lens bend sphere
+
+for (var hii = 0; hii < 6; hii++) {
+
+
+   var roadz : GameObject = PhotonNetwork.Instantiate(roadgo.name,roads[hii] + Vector3(0,1,0),roadrots[hii],0);
+	     roadz.transform.localScale = Vector3(scaa/2,scaa/3,scaa*2);
+   roadz.renderer.material.color = colors[hii];
+
+}
+
 */
+
+
+ // for (var vertdex = 0; vertdex < vertmax, vertdex++) {
+  
+  
+  //}
+  
+ // Instantiate(spheretester,metatemp,Quaternion.identity));
+  //first tile flag, spawn 6 vertices
+  //next tiles in that row, spawn 4, 4
+  //next row top = 4, then 2, 2 , 3
+  // 6 , 4 , 4 bottom four
+  // 4, 2 , 2 , 3 , 
+  // 4, 2, 2,....,3
+  // 3, 2, .....2
+  
+  /*
+
+	*/
+//  print ('debug');
+/*
+ points[0] = new PointF(x, y);
+                points[1] = new PointF(x + r, y + h);
+                points[2] = new PointF(x + r, y + side + h);
+                points[3] = new PointF(x, y + side + h + h);
+                points[4] = new PointF(x - r, y + side + h);
+                points[5] = new PointF(x - r, y + h);
+*/
+// 3, 4, 5, 4, 3 ; ii+1, +1,, -1, -1 if i>3 i*=-1 
+
+//if i in restricted roads/ etc. 6 4 2 3 pattern then skip bool
+   
+	  //roads[1] = c + (rv - hu)/scale          ;      //Vector3(x + r, 0,y - h);
+
+  
+  
+ // var tilemax = 3;
+//populate the vertex roads line by line, so along ltiling 3 pattern hit the bottom three or whatnot. each has 2 rails.
+/*
+   for (var tileset = 0; tileset < 5; tileset++) {
+	var zoffset =  (2*uv - hu)*tileset ;
+	if (tilemax < 5){
+	tilemax += 1;//3, 4, 5, 4, 3
+	}
+	else{
+	tilemax -= 1;
+	}
+	
+	*/

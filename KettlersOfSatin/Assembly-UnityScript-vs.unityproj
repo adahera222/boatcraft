@@ -44,12 +44,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\cursorcapture.js" />
-     <Compile Include="Assets\healthcopy.js" />
-     <Compile Include="Assets\masstile.js" />
-     <Compile Include="Assets\oncoll.js" />
-     <Compile Include="Assets\oncollid.js" />
-     <Compile Include="Assets\rpcready.js" />
+     <Compile Include="Assets\Scripts\game_manager.js" />
+     <Compile Include="Assets\Scripts\raycastselector.js" />
+     <Compile Include="Assets\Scripts\startsynchro.js" />
      <None Include="Assets\Plugins\PhotonNetwork\library\Photon3Unity3D.xml" />
      <None Include="Assets\Photon Unity Networking\changelog.txt" />
      <None Include="Assets\Photon Unity Networking\readme.txt" />
